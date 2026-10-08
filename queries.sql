@@ -138,3 +138,97 @@ mysql> INSERT INTO Loan (loan_number, branch_name, amount) VALUES
     -> (5, 'SBI_Jantarmantar', 5000);
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Branch;
++-------------------+-------------+--------+
+| branch_name       | branch_city | ASSETS |
++-------------------+-------------+--------+
+| SBI_Chamrajpet    | Bangalore   |  50000 |
+| SBI_Jantarmantar  | Delhi       |  20000 |
+| SBI_ParlimentRoad | Delhi       |  10000 |
+| SBI_ResidencyRoad | Bangalore   |  10000 |
+| SBI_ShivajiRoad   | Bombay      |  20000 |
++-------------------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM BankAccount;
++-------+-------------------+---------+
+| accno | branch_name       | balance |
++-------+-------------------+---------+
+|     1 | SBI_Chamrajpet    |    2000 |
+|     2 | SBI_ResidencyRoad |    5000 |
+|     3 | SBI_ShivajiRoad   |    6000 |
+|     4 | SBI_ParlimentRoad |    9000 |
+|     5 | SBI_Jantarmantar  |    8000 |
+|     6 | SBI_ShivajiRoad   |    4000 |
+|     8 | SBI_ResidencyRoad |    4000 |
+|     9 | SBI_ParlimentRoad |    3000 |
+|    10 | SBI_ResidencyRoad |    5000 |
+|    11 | SBI_Jantarmantar  |    2000 |
++-------+-------------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM BankCustomer;
++---------------+----------------------+---------------+
+| customer_name | customer_street      | customer_city |
++---------------+----------------------+---------------+
+| Avinash       | Bull_Temple_Road     | Bangalore     |
+| Dinesh        | Bannerghatta_Road    | Bangalore     |
+| Mohan         | NationalCollege_Road | Bangalore     |
+| Nikhil        | Akbar_Road           | Delhi         |
+| Ravi          | Prithviraj_Road      | Delhi         |
++---------------+----------------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Depositer;
++---------------+-------+
+| customer_name | accno |
++---------------+-------+
+| Avinash       |     1 |
+| Dinesh        |     2 |
+| Nikhil        |     4 |
+| Ravi          |     5 |
+| Avinash       |     8 |
+| Nikhil        |     9 |
+| Dinesh        |    10 |
+| Nikhil        |    11 |
++---------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Loan;
++-------------+-------------------+--------+
+| loan_number | branch_name       | amount |
++-------------+-------------------+--------+
+|           1 | SBI_Chamrajpet    |   1000 |
+|           2 | SBI_ResidencyRoad |   2000 |
+|           3 | SBI_ShivajiRoad   |   3000 |
+|           4 | SBI_ParlimentRoad |   4000 |
+|           5 | SBI_Jantarmantar  |   5000 |
++-------------+-------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE BankAccount
+    -> ADD FOREIGN KEY (branch_name) REFERENCES Branch(branch_name) ON DELETE CASCADE
+    -> ON UPDATE CASCADE;
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Depositer
+    -> ADD FOREIGN KEY (accno) REFERENCES BankAccount(accno) ON DELETE CASCADE
+    -> ON UPDATE CASCADE;
+Query OK, 8 rows affected (0.06 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Depositer
+    -> ADD FOREIGN KEY (customer_name) REFERENCES BankAccount(customer_name) ON DELETE CASCADE
+    -> ON UPDATE CASCADE;
+mysql> ALTER TABLE Depositer
+    -> ADD FOREIGN KEY (customer_name) REFERENCES BankCustomer(customer_name) ON DELETE CASCADE
+    -> ON UPDATE CASCADE;
+Query OK, 8 rows affected (0.06 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Loan
+    -> ADD FOREIGN KEY (branch_name) REFERENCES BankAccount(branch_name) ON DELETE CASCADE ON UPDATE CASCADE;
+Query OK, 5 rows affected (0.06 sec)
+Records: 5  Duplicates: 0  Warnings: 0
